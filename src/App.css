@@ -1,7 +1,78 @@
 .App {
   text-align: center;
+  font-family: Arial, sans-serif;
 }
 
+.container {
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* TabBar styles */
+.ant-tab-bar {
+  background-color: #f4f4f4;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.ant-tab-bar-item {
+  font-size: 14px;
+  color: #777;
+}
+
+.ant-tab-bar-item-selected {
+  color: #1890ff;  /* Highlight color for selected tab */
+}
+
+/* Button styles */
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  background-color: #1890ff;
+  color: white;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #40a9ff;
+}
+
+/* Tab content styles */
+.container p {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .ant-tab-bar-item {
+    font-size: 13px;
+  }
+
+  button {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+}
+
+/* For logo animation (optional) */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -13,6 +84,16 @@
   }
 }
 
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Header section */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -26,13 +107,4 @@
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
