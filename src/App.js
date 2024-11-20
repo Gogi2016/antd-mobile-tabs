@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { TabBar, Button } from 'antd-mobile';
 import DataPage from './DataPage';
+import CartPage from './cartPage';  // Ensure CartPage is imported
 
 function App() {
   const [selectedTab, setSelectedTab] = useState('home');
@@ -9,26 +10,26 @@ function App() {
   const [showButton2Content, setShowButton2Content] = useState(false);
 
   const handleButton1Click = () => {
-    setShowButton1Content(true);  // Show Button 1 content
-    setShowButton2Content(false); // Hide Button 2 content
+    setShowButton1Content(true);
+    setShowButton2Content(false);
   };
 
   const handleButton2Click = () => {
-    setShowButton2Content(true);  // Show Button 2 content
-    setShowButton1Content(false); // Hide Button 1 content
+    setShowButton2Content(true);
+    setShowButton1Content(false);
   };
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
-    setShowButton1Content(false);  // Reset Button 1 content when any tab is clicked
-    setShowButton2Content(false);  // Reset Button 2 content when any tab is clicked
+    setShowButton1Content(false);
+    setShowButton2Content(false);
   };
 
   const renderTabContent = () => {
     if (showButton1Content) {
       return (
         <div className="container">
-          <p>{selectedTab === 'home' ? 'Home Tab Button 1 Content Here' : 
+          <p>{selectedTab === 'home' ? 'Home Tab Button 1 Content Here' :
              selectedTab === 'settings' ? 'Settings Tab Button 1 Content Here' :
              'Profile Tab Button 1 Content Here'}</p>
         </div>
@@ -49,7 +50,7 @@ function App() {
       case 'home':
         return (
           <div className="container">
-            <p>Home Content</p>
+            <p>Home Content Here</p>
             <Button onClick={handleButton1Click}>Button 1</Button>
             <Button onClick={handleButton2Click}>Button 2</Button>
           </div>
@@ -57,7 +58,7 @@ function App() {
       case 'profile':
         return (
           <div className="container">
-            <p>Profile Content</p>
+            <p>Profile Content here</p>
             <Button onClick={handleButton1Click}>Button 1</Button>
             <Button onClick={handleButton2Click}>Button 2</Button>
           </div>
@@ -65,13 +66,15 @@ function App() {
       case 'settings':
         return (
           <div className="container">
-            <p>Settings Content</p>
+            <p>Settings Content here</p>
             <Button onClick={handleButton1Click}>Button 1</Button>
             <Button onClick={handleButton2Click}>Button 2</Button>
           </div>
         );
       case 'data':
-        return <DataPage />;  // Render the DataPage component when 'data' tab is selected
+        return <DataPage />;
+      case 'cart':  // Add this case to render CartPage
+        return <CartPage />;
       default:
         return null;
     }
@@ -105,6 +108,12 @@ function App() {
           key="data"
           selected={selectedTab === 'data'}
           onClick={() => handleTabChange('data')}
+        />
+        <TabBar.Item  // Add Cart tab to the TabBar
+          title="Cart"
+          key="cart"
+          selected={selectedTab === 'cart'}
+          onClick={() => handleTabChange('cart')}
         />
       </TabBar>
     </div>
