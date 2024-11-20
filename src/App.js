@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import './App.css';
 import { TabBar, Button } from 'antd-mobile';
+import DataPage from './DataPage';
 
 function App() {
   const [selectedTab, setSelectedTab] = useState('home');
@@ -70,6 +70,8 @@ function App() {
             <Button onClick={handleButton2Click}>Button 2</Button>
           </div>
         );
+      case 'data':
+        return <DataPage />;  // Render the DataPage component when 'data' tab is selected
       default:
         return null;
     }
@@ -97,6 +99,12 @@ function App() {
           key="settings"
           selected={selectedTab === 'settings'}
           onClick={() => handleTabChange('settings')}
+        />
+        <TabBar.Item
+          title="Data"
+          key="data"
+          selected={selectedTab === 'data'}
+          onClick={() => handleTabChange('data')}
         />
       </TabBar>
     </div>
