@@ -106,8 +106,8 @@ function App() {
         <TabBar.Item
           title="Product"
           key="product"
-          selected={selectedTab === 'data'}
-          onClick={() => handleTabChange('data')}
+          selected={selectedTab === 'product'}
+          onClick={() => handleTabChange('product')}
         />
         <TabBar.Item  // Add Cart tab to the TabBar
           title="Cart"
