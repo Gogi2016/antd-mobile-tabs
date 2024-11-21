@@ -1,39 +1,44 @@
 import React, { useState, useEffect } from 'react';
+import { List } from 'antd-mobile';
 import axios from 'axios';
 
 function ProductPage() {
-  const [products, setProducts] = useState([]); // State to store the products data
-  const [loading, setLoading] = useState(true);  // State for loading status
-  const [error, setError] = useState(null);      // State for any error
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // useEffect hook to fetch data when the component mounts
   useEffect(() => {
-    axios.get('https://dummyjson.com/products')  // API endpoint to fetch data
+    axios.get('https://dummyjson.com/products')
       .then(response => {
-        setProducts(response.data.products);  // Update state with fetched data
-        setLoading(false); // Set loading to false once data is fetched
+        setProducts(response.data.products);
+        setLoading(false);
       })
       .catch(err => {
-        setError(err); // Set error state if something goes wrong
-        setLoading(false); // Set loading to false
+        setError(err);
+        setLoading(false);
       });
-  }, []); // Empty dependency array means this effect runs only once when the component mounts
+  }, []);
 
-  if (loading) return <p>Loading...</p>; // Show loading message while fetching data
-  if (error) return <p>Error: {error.message}</p>; // Show error message if there's an error
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div>
+    <div style={{ padding: '10px' }}>
       <h1>Products</h1>
-      <ul>
+      <List header="Product List">
         {products.map((product) => (
-          <li key={product.id}>
-            <h3>{product.name}</h3>
-            <p>{product.description}</p>
-            <p>Price: ${product.price}</p>
-          </li>
+         <List.Item
+         key={product.id}
+         description={product.description}
+         extra={<img src={product.thumbnail} alt={product.title} style={{ width: 50, height: 50 }} />}
+       >
+         {product.title}
+         <div style={{ marginTop: '8px', color: '#1890ff', fontWeight: 'bold' }}>
+           Price: R{product.price}
+         </div>
+       </List.Item>
         ))}
-      </ul>
+      </List>
     </div>
   );
 }

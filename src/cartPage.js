@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { List } from 'antd-mobile'; // Import List from antd-mobile
 
 function CartPage() {
   const [cartData, setCartData] = useState([]); // State to store cart data
@@ -25,23 +26,27 @@ function CartPage() {
   return (
     <div>
       <h1>Cart Details</h1>
-      <ul>
+      <List>
         {cartData.map((cart) => (
-          <li key={cart.id}>
+          <List.Item key={cart.id} >
             <h3>Cart ID: {cart.id}</h3>
-            <p>Total Price: ${cart.totalPrice}</p>
-            <ul>
+            <List>
               {cart.products.map((product) => (
-                <li key={product.id}>
-                  <h4>{product.name}</h4>
-                  <p>Price: ${product.price}</p>
-                  <p>Quantity: {product.quantity}</p>
-                </li>
+                <List.Item
+                  key={product.id}
+                  description={product.description}
+                  extra={<img src={product.thumbnail} alt={product.title} style={{ width: 50, height: 50 }} />}
+                >
+                  {product.title}
+                  <div style={{ marginTop: '8px', color: '#1890ff', fontWeight: 'bold' }}>
+                    Price: R{product.price}
+                  </div>
+                </List.Item>
               ))}
-            </ul>
-          </li>
+            </List>
+          </List.Item>
         ))}
-      </ul>
+      </List>
     </div>
   );
 }
