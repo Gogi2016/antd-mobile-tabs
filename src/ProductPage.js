@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function DataPage() {
+function ProductPage() {
   const [products, setProducts] = useState([]); // State to store the products data
   const [loading, setLoading] = useState(true);  // State for loading status
   const [error, setError] = useState(null);      // State for any error
@@ -38,4 +38,4 @@ function DataPage() {
   );
 }
 
-export default DataPage;
+export default ProductPage;

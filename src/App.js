@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 import { TabBar, Button } from 'antd-mobile';
-import DataPage from './DataPage';
-import CartPage from './cartPage';  // Ensure CartPage is imported
+import CartPage from './cartPage'; 
+import ProductPage from './ProductPage';
 
 function App() {
   const [selectedTab, setSelectedTab] = useState('home');
@@ -71,8 +71,8 @@ function App() {
             <Button onClick={handleButton2Click}>Button 2</Button>
           </div>
         );
-      case 'data':
-        return <DataPage />;
+      case 'product':
+        return <ProductPage />;
       case 'cart':  // Add this case to render CartPage
         return <CartPage />;
       default:
@@ -104,8 +104,8 @@ function App() {
           onClick={() => handleTabChange('settings')}
         />
         <TabBar.Item
-          title="Data"
-          key="data"
+          title="Product"
+          key="product"
           selected={selectedTab === 'data'}
           onClick={() => handleTabChange('data')}
         />
