@@ -27,53 +27,45 @@ function App() {
 
   const renderTabContent = () => {
     if (showButton1Content) {
-      return (
-        <div className="container">
-          <p>{selectedTab === 'home' ? 'Home Tab Button 1 Content Here' :
-             selectedTab === 'settings' ? 'Settings Tab Button 1 Content Here' :
-             'Profile Tab Button 1 Content Here'}</p>
-        </div>
-      );
+      return <p>{selectedTab === 'home' ? 'Home Tab Button 1 Content Here' : 
+                 selectedTab === 'settings' ? 'Settings Tab Button 1 Content Here' :
+                 'Profile Tab Button 1 Content Here'}</p>;
     }
 
     if (showButton2Content) {
-      return (
-        <div className="container">
-          <p>{selectedTab === 'home' ? 'Home Tab Button 2 Content Here' : 
-             selectedTab === 'settings' ? 'Settings Tab Button 2 Content Here' :
-             'Profile Tab Button 2 Content Here'}</p>
-        </div>
-      );
+      return <p>{selectedTab === 'home' ? 'Home Tab Button 2 Content Here' : 
+                 selectedTab === 'settings' ? 'Settings Tab Button 2 Content Here' :
+                 'Profile Tab Button 2 Content Here'}</p>;
     }
 
     switch (selectedTab) {
       case 'home':
         return (
-          <div className="container">
+          <>
             <p>Home Content Here</p>
             <Button onClick={handleButton1Click}>Button 1</Button>
             <Button onClick={handleButton2Click}>Button 2</Button>
-          </div>
+          </>
         );
       case 'profile':
         return (
-          <div className="container">
-            <p>Profile Content here</p>
+          <>
+            <p>Profile Content Here</p>
             <Button onClick={handleButton1Click}>Button 1</Button>
             <Button onClick={handleButton2Click}>Button 2</Button>
-          </div>
+          </>
         );
       case 'settings':
         return (
-          <div className="container">
-            <p>Settings Content here</p>
+          <>
+            <p>Settings Content Here</p>
             <Button onClick={handleButton1Click}>Button 1</Button>
             <Button onClick={handleButton2Click}>Button 2</Button>
-          </div>
+          </>
         );
       case 'product':
         return <ProductPage />;
-      case 'cart':  // Add this case to render CartPage
+      case 'cart':
         return <CartPage />;
       default:
         return null;
@@ -82,8 +74,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Working on TabBar</h1>
-      {renderTabContent()}
+      <div className="content">
+        {renderTabContent()}
+      </div>
       <TabBar>
         <TabBar.Item
           title="Home"
@@ -109,7 +102,7 @@ function App() {
           selected={selectedTab === 'product'}
           onClick={() => handleTabChange('product')}
         />
-        <TabBar.Item  // Add Cart tab to the TabBar
+        <TabBar.Item
           title="Cart"
           key="cart"
           selected={selectedTab === 'cart'}

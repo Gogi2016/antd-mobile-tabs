@@ -1,6 +1,15 @@
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   font-family: Arial, sans-serif;
+}
+
+.content {
+  flex: 1;  /* Takes up remaining space */
+  overflow-y: auto; /* Makes the content scrollable */
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .container {
@@ -15,12 +24,16 @@ h1 {
 
 /* TabBar styles */
 .ant-tab-bar {
-  background-color: #f4f4f4;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f4f4f428;
+  color: antiquewhite;
 }
 
 .ant-tab-bar-item {
-  font-size: 14px;
+  font-size: 20px;
   color: #777;
 }
 
@@ -47,50 +60,15 @@ button:hover {
 
 /* Tab content styles */
 .container p {
-  font-size: 1.1rem;
+  font-size:15px;
   color: #333;
   margin-bottom: 20px;
-}
-
-/* Media query for responsiveness */
-@media (max-width: 768px) {
-  .container {
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  .ant-tab-bar-item {
-    font-size: 13px;
-  }
-
-  button {
-    padding: 8px 15px;
-    font-size: 14px;
-  }
 }
 
 /* For logo animation (optional) */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Header section */
