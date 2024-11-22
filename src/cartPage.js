@@ -1,38 +1,48 @@
 import React, { useState, useEffect } from 'react';
+import { List as AntdMobileList } from 'antd-mobile'; // For mobile
+import { List as AntdList } from 'antd'; // For web
 import axios from 'axios';
-import { List } from 'antd-mobile'; // Import List from antd-mobile
 
 function CartPage() {
-  const [cartData, setCartData] = useState([]); // State to store cart data
-  const [loading, setLoading] = useState(true);  // State for loading status
-  const [error, setError] = useState(null);      // State for any error
+  const [cartData, setCartData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // useEffect hook to fetch cart data when the component mounts
   useEffect(() => {
-    axios.get('https://dummyjson.com/carts')  // API endpoint to fetch cart data
+    const checkIfMobile = () => setIsMobile(window.innerWidth <= 768);
+
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+
+    axios.get('https://dummyjson.com/carts')
       .then(response => {
-        setCartData(response.data.carts);  // Update state with fetched cart data
-        setLoading(false); // Set loading to false once data is fetched
+        setCartData(response.data.carts);
+        setLoading(false);
       })
       .catch(err => {
-        setError(err); // Set error state if something goes wrong
-        setLoading(false); // Set loading to false
+        setError(err);
+        setLoading(false);
       });
-  }, []); // Empty dependency array means this effect runs only once when the component mounts
 
-  if (loading) return <p>Loading...</p>; // Show loading message while fetching data
-  if (error) return <p>Error: {error.message}</p>; // Show error message if there's an error
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
 
-  return (
-    <div>
-      <h1>Cart Details</h1>
-      <List>
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  // Mobile List from antd-mobile
+  if (isMobile) {
+    return (
+      <AntdMobileList header="Cart List">
         {cartData.map((cart) => (
-          <List.Item key={cart.id} >
+          <AntdMobileList.Item key={cart.id}>
             <h3>Cart ID: {cart.id}</h3>
-            <List>
+            <AntdMobileList>
               {cart.products.map((product) => (
-                <List.Item
+                <AntdMobileList.Item
                   key={product.id}
                   description={product.description}
                   extra={<img src={product.thumbnail} alt={product.title} style={{ width: 50, height: 50 }} />}
@@ -41,12 +51,39 @@ function CartPage() {
                   <div style={{ marginTop: '8px', color: '#1890ff', fontWeight: 'bold' }}>
                     Price: R{product.price}
                   </div>
-                </List.Item>
+                </AntdMobileList.Item>
               ))}
-            </List>
-          </List.Item>
+            </AntdMobileList>
+          </AntdMobileList.Item>
         ))}
-      </List>
+      </AntdMobileList>
+    );
+  }
+
+  // Web List from antd
+  return (
+    <div>
+      <h1>Cart Details</h1>
+      <AntdList
+        header="Cart List"
+        bordered
+        dataSource={cartData}
+        renderItem={(cart) => (
+          <AntdList.Item key={cart.id}>
+            <div>
+              <h3>Cart ID: {cart.id}</h3>
+              {cart.products.map((product) => (
+                <div key={product.id}>
+                  <h4>{product.title}</h4>
+                  <p>{product.description}</p>
+                  <img src={product.thumbnail} alt={product.title} style={{ width: 50, height: 50 }} />
+                  <div>Price: R{product.price}</div>
+                </div>
+              ))}
+            </div>
+          </AntdList.Item>
+        )}
+      />
     </div>
   );
 }
