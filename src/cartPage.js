@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { List as AntdMobileList } from 'antd-mobile'; // For mobile
-import { List as AntdList } from 'antd'; // For web
+import { List as AntdMobileList, Card, Button, Toast } from 'antd-mobile'; // For mobile
+import { List as AntdList, Skeleton } from 'antd'; // For web
 import axios from 'axios';
 
 function CartPage() {
@@ -15,6 +15,7 @@ function CartPage() {
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
 
+    // Fetch cart data
     axios.get('https://dummyjson.com/carts')
       .then(response => {
         setCartData(response.data.carts);
@@ -30,7 +31,14 @@ function CartPage() {
     };
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  const handleCheckout = () => {
+    Toast.show({
+      content: 'Proceeding to checkout...',
+      position: 'bottom',
+    });
+  };
+
+  if (loading) return <Skeleton active />;
   if (error) return <p>Error: {error.message}</p>;
 
   // Mobile List from antd-mobile
@@ -84,6 +92,9 @@ function CartPage() {
           </AntdList.Item>
         )}
       />
+      <Button type="primary" onClick={handleCheckout} style={{ marginTop: '20px' }}>
+        Proceed to Checkout
+      </Button>
     </div>
   );
 }

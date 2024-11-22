@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List as AntdMobileList } from 'antd-mobile'; // For mobile
-import { List as AntdList } from 'antd'; // For web
+import { List as AntdMobileList, Card, Button, Toast } from 'antd-mobile'; // Import components from antd-mobile
 import axios from 'axios';
 
 function ProductPage() {
@@ -15,6 +14,7 @@ function ProductPage() {
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
 
+    // Fetch products data
     axios.get('https://dummyjson.com/products')
       .then(response => {
         setProducts(response.data.products);
@@ -30,6 +30,13 @@ function ProductPage() {
     };
   }, []);
 
+  const handleAddToCart = (product) => {
+    Toast.show({
+      content: `${product.title} added to cart!`,
+      position: 'bottom',
+    });
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -39,11 +46,17 @@ function ProductPage() {
       <AntdMobileList header="Products">
         {products.map((product) => (
           <AntdMobileList.Item key={product.id} description={product.description}>
-             <img src={product.thumbnail} alt={product.title} style={{ width: 100, height: 100 }} />
-            {product.title}
-            <div style={{ marginTop: '8px', color: '#1890ff', fontWeight: 'bold' }}>
-              Price: R{product.price}
-            </div>
+            <Card style={{ padding: 16, marginBottom: 10 }}>
+              <img src={product.thumbnail} alt={product.title} style={{ width: '100%', height: 'auto' }} />
+              <h3>{product.title}</h3>
+              <div>{product.description}</div>
+              <div style={{ marginTop: '8px', color: '#1890ff', fontWeight: 'bold' }}>
+                Price: R{product.price}
+              </div>
+              <Button style={{ marginTop: '10px' }} onClick={() => handleAddToCart(product)}>
+                Add to Cart
+              </Button>
+            </Card>
           </AntdMobileList.Item>
         ))}
       </AntdMobileList>
@@ -54,19 +67,19 @@ function ProductPage() {
   return (
     <div>
       <h1>Products</h1>
-      <AntdList
-        header="Products List"
-        bordered
-        dataSource={products}
-        renderItem={(product) => (
-          <AntdList.Item key={product.id}>
-            <h3>{product.title}</h3>
-            <p>{product.description}</p>
-            <img src={product.thumbnail} alt={product.title} style={{ width: 100, height: 100 }} />
-            <div>Price: R{product.price}</div>
-          </AntdList.Item>
-        )}
-      />
+      {products.map((product) => (
+        <Card key={product.id} style={{ marginBottom: 16, padding: 16, width: '300px', display: 'inline-block' }}>
+          <img src={product.thumbnail} alt={product.title} style={{ width: '100%', height: 'auto' }} />
+          <h3>{product.title}</h3>
+          <p>{product.description}</p>
+          <div style={{ marginTop: '8px', color: '#1890ff', fontWeight: 'bold' }}>
+            Price: R{product.price}
+          </div>
+          <Button style={{ marginTop: '10px' }} onClick={() => handleAddToCart(product)}>
+            Add to Cart
+          </Button>
+        </Card>
+      ))}
     </div>
   );
 }

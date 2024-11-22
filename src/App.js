@@ -1,67 +1,131 @@
 import React, { useState, useEffect } from 'react';
-import { List, Card, Button } from 'antd-mobile'; // Import components from antd-mobile
-
-// Sample data (could be cart items, products, etc.)
-const sampleData = [
-  { id: 1, title: 'Product 1', description: 'Description of Product 1', price: 'R100', thumbnail: 'https://via.placeholder.com/150' },
-  { id: 2, title: 'Product 2', description: 'Description of Product 2', price: 'R200', thumbnail: 'https://via.placeholder.com/150' },
-  { id: 3, title: 'Product 3', description: 'Description of Product 3', price: 'R150', thumbnail: 'https://via.placeholder.com/150' },
-];
+import './App.css';
+import { TabBar, Button } from 'antd-mobile';
+import CartPage from './cartPage';
+import ProductPage from './ProductPage';
 
 function App() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Detect mobile view
+  const [selectedTab, setSelectedTab] = useState('home');
+  const [showButton1Content, setShowButton1Content] = useState(false);
+  const [showButton2Content, setShowButton2Content] = useState(false);
+  const [isMobile, setIsMobile] = useState(false); // State to detect mobile view
+
+  const handleButton1Click = () => {
+    setShowButton1Content(true);
+    setShowButton2Content(false);
+  };
+
+  const handleButton2Click = () => {
+    setShowButton2Content(true);
+    setShowButton1Content(false);
+  };
+
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+    setShowButton1Content(false);
+    setShowButton2Content(false);
+  };
+
+  const renderTabContent = () => {
+    if (showButton1Content) {
+      return <p>{selectedTab === 'home' ? 'Home Tab Button 1 Content Here' : 
+                 selectedTab === 'settings' ? 'Settings Tab Button 1 Content Here' :
+                 'Profile Tab Button 1 Content Here'}</p>;
+    }
+
+    if (showButton2Content) {
+      return <p>{selectedTab === 'home' ? 'Home Tab Button 2 Content Here' : 
+                 selectedTab === 'settings' ? 'Settings Tab Button 2 Content Here' :
+                 'Profile Tab Button 2 Content Here'}</p>;
+    }
+
+    switch (selectedTab) {
+      case 'home':
+        return (
+          <>
+            <p>Home Content Here</p>
+            <Button onClick={handleButton1Click}>Button 1</Button>
+            <Button onClick={handleButton2Click}>Button 2</Button>
+          </>
+        );
+      case 'profile':
+        return (
+          <>
+            <p>Profile Content Here</p>
+            <Button onClick={handleButton1Click}>Button 1</Button>
+            <Button onClick={handleButton2Click}>Button 2</Button>
+          </>
+        );
+      case 'settings':
+        return (
+          <>
+            <p>Settings Content Here</p>
+            <Button onClick={handleButton1Click}>Button 1</Button>
+            <Button onClick={handleButton2Click}>Button 2</Button>
+          </>
+        );
+      case 'product':
+        return <ProductPage />;
+      case 'cart':
+        return <CartPage />;
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // Update state based on window size
+    const checkIfMobile = () => setIsMobile(window.innerWidth <= 768); // Detect mobile view
+
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
     };
-
-    window.addEventListener('resize', handleResize); // Listen for window resize event
-    return () => window.removeEventListener('resize', handleResize); // Cleanup listener on component unmount
   }, []);
-
-  // Render mobile version using antd-mobile List and Card components
-  const renderMobileContent = () => (
-    <List header="Products">
-      {sampleData.map((item) => (
-        <List.Item key={item.id}>
-          <Card>
-            <div>
-              <img src={item.thumbnail} alt={item.title} style={{ width: 50, height: 50 }} />
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-              <div style={{ marginTop: '8px', color: '#1890ff', fontWeight: 'bold' }}>
-                Price: {item.price}
-              </div>
-              <Button size="small" style={{ marginTop: '10px' }}>Add to Cart</Button>
-            </div>
-          </Card>
-        </List.Item>
-      ))}
-    </List>
-  );
-
-  // Render desktop version using antd List and Card components
-  const renderDesktopContent = () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-      {sampleData.map((item) => (
-        <Card key={item.id} style={{ width: 200 }}>
-          <img src={item.thumbnail} alt={item.title} style={{ width: '100%' }} />
-          <h3>{item.title}</h3>
-          <p>{item.description}</p>
-          <div style={{ marginTop: '8px', color: '#1890ff', fontWeight: 'bold' }}>
-            Price: {item.price}
-          </div>
-          <Button style={{ marginTop: '10px' }}>Add to Cart</Button>
-        </Card>
-      ))}
-    </div>
-  );
 
   return (
     <div className="App">
-      <h1>{isMobile ? 'Mobile View' : 'Desktop View'}</h1>
-      {isMobile ? renderMobileContent() : renderDesktopContent()}
+      <div className="content">
+        {renderTabContent()}
+      </div>
+      <TabBar>
+        <TabBar.Item
+          title="Home"
+          key="home"
+        
+          selected={selectedTab === 'home'}
+          onClick={() => handleTabChange('home')}
+        />
+        <TabBar.Item
+          title="Profile"
+          key="profile"
+          
+          selected={selectedTab === 'profile'}
+          onClick={() => handleTabChange('profile')}
+        />
+        <TabBar.Item
+          title="Settings"
+          key="settings"
+         
+          selected={selectedTab === 'settings'}
+          onClick={() => handleTabChange('settings')}
+        />
+        <TabBar.Item
+          title="Product"
+          key="product"
+          
+          selected={selectedTab === 'product'}
+          onClick={() => handleTabChange('product')}
+        />
+        <TabBar.Item
+          title="Cart"
+          key="cart"
+         
+          selected={selectedTab === 'cart'}
+          onClick={() => handleTabChange('cart')}
+        />
+      </TabBar>
     </div>
   );
 }
